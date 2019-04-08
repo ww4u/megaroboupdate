@@ -13,18 +13,19 @@
    * ![image.png](https://upload-images.jianshu.io/upload_images/3399573-c1a7ae6a0cf200f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
   
 * 升级文件内容
-  | 名称 | 内容 | 大小 |
-  | -- | -- | -- |
-  | GreatShot_1.20_Beta1.mrh | | 6.29 MB |
-  |  | ARM|  |
-  |  | FPGA|  |
-  | Sinanju(SOFT)_00.00.01.33.upd | | 906 KB |
-  |  | 背板|  |
-  |  | 主板|  |
-  |  | 内核|  |
-  |  | 设备|  |
-  |  | webcontrol|  |
-  |  | MCT| ? |
+  
+    | 名称 | 内容 | 大小 |
+    | -- | -- | -- |
+    | GreatShot_1.20_Beta1.mrh | | 6.29 MB |
+    |  | ARM|  |
+    |  | FPGA|  |
+    | Sinanju(SOFT)_00.00.01.33.upd | | 906 KB |
+    |  | 背板|  |
+    |  | 主板|  |
+    |  | 内核|  |
+    |  | 设备|  |
+    |  | webcontrol|  |
+    |  | MCT| ? |
 
 ## 集成
 * 升级文件组成
