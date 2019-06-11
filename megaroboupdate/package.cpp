@@ -30,10 +30,10 @@ Package::Package(const QString& strPath, QObject *parent)
 
 int Package::compressFile()
 {
-    qDebug() << "Enter Package Compress";
+    qDebug() << "Notify: Enter Package Compress";
     QByteArray ba;
     if(loadIn(ba) != 0){
-        qDebug() << "package loadin error";
+        qDebug() << "Error: package loadin error";
         return -1;
     }
 
@@ -50,16 +50,16 @@ int Package::compressFile()
     this->packetData();
 
     if(save() != 0){
-        qDebug() << "save fail";
+        qDebug() << "Error: save fail";
         return -1;
     }
-    qDebug() << "Package Compress Success";
+    qDebug() << "Notify: Package Compress Success";
     return 0;
 }
 
 int Package::uncompressFile()
 {
-    qDebug() << "Enter Package Uncompress";
+    qDebug() << "Notify: Enter Package Uncompress";
     if(_loadIn() != 0){
         return -1;
     }
@@ -67,9 +67,8 @@ int Package::uncompressFile()
     if(unpackingToEntity(this) != 0){
         return -1;
     }
-
     _save();
-    qDebug() << "Package Uncompress Success";
+    qDebug() << "Notify: Package Uncompress Success";
 }
 
 void Package::insertFile( const QString &fileName )
@@ -86,11 +85,11 @@ int Package::_loadIn()
 {
     QFile f(filePath);
     if( !f.exists() ){
-        qDebug() << "File Not Exist";
+        qDebug() << "Error: File Not Exist";
         return -1;
     }
     if (!f.open(QIODevice::ReadOnly)){
-        qDebug() << "Open error";
+        qDebug() << "Error: Open error";
         return -1;
     }
 
@@ -111,7 +110,7 @@ int Package::_loadIn()
     //! check
     quint32 u32tmp = getCRC((unsigned char*)(mPayload.data()), mSize);
     if(u32tmp != mCheck){
-        qDebug() << "_loadin check error";
+        qDebug() << "Error: _loadin check error";
         return -1;
     }
 
@@ -189,11 +188,12 @@ int Package::unpackingToEntity(Package *pk)
 /* 解压时调用 */
 int Package::_save()
 {
+    QString dirPath = filePath.left(filePath.lastIndexOf("/"));
     for(int i = 0; i < mOutEntityList.size(); i++){
         if(mOutEntityList.at(i)->mId == MCT_MRQ){
-            mOutEntityList.at(i)->mOutFileName = qApp->applicationDirPath() + QString("/entity_%1.upd").arg(i);
+            mOutEntityList.at(i)->mOutFileName = dirPath + QString("/mrq.dat");
         }else if( mOutEntityList.at(i)->mId == MCT_MRH ){
-            mOutEntityList.at(i)->mOutFileName = qApp->applicationDirPath() + QString("/entity_%1.mrh").arg(i);
+            mOutEntityList.at(i)->mOutFileName = dirPath + QString("/mrh.dat");
         }
         mOutEntityList.at(i)->extractSource();
     }

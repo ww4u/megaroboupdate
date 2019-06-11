@@ -17,7 +17,7 @@ int Entity::compressFile()
 {
     QByteArray bAPayload;
     if( this->loadIn(bAPayload) !=0 ){
-        qDebug() << "loadIn error";
+        qDebug() << "Error: loadIn error";
         return -1;
     }
 
@@ -26,7 +26,7 @@ int Entity::compressFile()
 
     //! 生成校验码
     if( generateCheckCode( mPayload, mCheck ) != 0 ){
-        qDebug() << "generate code error";
+        qDebug() << "Error: generate code error";
         return -1;
     }
 
@@ -55,12 +55,12 @@ int Entity::loadIn( QByteArray &bA )
     //!
     QFile f( filePath );
     if( !f.exists() ){
-        qDebug() << "File not exist";
+        qDebug() << "Error: File not exist";
         return -1;
     }
 
     if (!f.open(QIODevice::ReadOnly)){
-        qDebug() << QString("%1 open error").arg(filePath);
+        qDebug() << QString("Error: %1 open error").arg(filePath);
         return -1;
     }
 

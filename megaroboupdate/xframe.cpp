@@ -53,7 +53,7 @@ int XFrame::packetData()
 {
     mOutputData.clear();
     if( mDescription.size() > DESCRIPTION_SIZE ){
-        qDebug() << "Description Too Large";
+        qDebug() << "Error: Description Too Large";
         return -1;
     }
     mOutputData.append( mDescription.toLocal8Bit().data(), DESCRIPTION_SIZE );

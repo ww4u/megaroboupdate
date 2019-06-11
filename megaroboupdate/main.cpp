@@ -6,9 +6,36 @@
 #include "entity.h"
 #include "package.h"
 
+
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+    switch (type) {
+        case QtDebugMsg:
+            fprintf(stdout, "%s\n", localMsg.constData());
+            break;
+        case QtInfoMsg:
+            fprintf(stdout, "%s\n", localMsg.constData());
+            break;
+        case QtWarningMsg:
+            fprintf(stdout, "%s\n", localMsg.constData());
+            break;
+        case QtCriticalMsg:
+            fprintf(stdout, "%s\n", localMsg.constData());
+            break;
+        case QtFatalMsg:
+            fprintf(stdout, "%s\n", localMsg.constData());
+            break;
+    }
+    fflush(stdout);
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+    qInstallMessageHandler(myMessageOutput);
+
     QCoreApplication::setApplicationName("Pack and Unpacking tool");
     QCoreApplication::setApplicationVersion("V0.0.1.0");
 
@@ -41,7 +68,7 @@ int main(int argc, char *argv[])
         if(parser.isSet(op5)){
             packagePath = parser.value(op5);
         }
-        qDebug() << parser.value(op3) << parser.value(op4) << packagePath;
+//        qDebug() << parser.value(op3) << parser.value(op4) << packagePath;
         Entity *e = new Entity;
         e->setFilePath(parser.value(op3));
         e->setID(MCT_MRQ);
