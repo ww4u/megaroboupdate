@@ -16,8 +16,11 @@ public:
     /* 提取源码 */
     int extractSource();
 
+
+
 protected:
     int loadIn( QByteArray &bA );
+
 
 };
 

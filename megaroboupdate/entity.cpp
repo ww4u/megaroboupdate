@@ -71,13 +71,22 @@ int Entity::loadIn( QByteArray &bA )
 
     return 0;
 }
+#include <QFileInfo>
+#include <QDir>
 /* 解压时提取出源代码 */
 int Entity::extractSource()
 {
     QFile f(mOutFileName);
+    QFileInfo info(mOutFileName);
+    //qDebug() << info.absolutePath() << info.absoluteFilePath();
+    QDir dir;
+    dir.mkpath(info.absolutePath());
+
     if(!f.open(QIODevice::WriteOnly)){
         return -1;
     }
     f.write(mPayload);
     f.close();
+
+    return 0;
 }

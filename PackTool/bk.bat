@@ -1,0 +1,1 @@
+megaroboupdate.exe -c -r mrh.dat -q mrq.dat -d demo\\0\\MCT_motion.mrp -i demo\\0\\debug.xml -j demo\\1\\MCT_motion.mrp -k demo\\1\\debug.xml -l  demo\\2\\MCT_motion.mrp -m demo\\2\\debug.xml -u update.txt  -o output\\output.upd

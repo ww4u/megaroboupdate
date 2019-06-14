@@ -18,7 +18,14 @@ enum ID{
     MCT_TOOLSET,
     MCT_BLOCK,
     MCT_ENTITY,
-    MCT_PACKAGE
+    MCT_PACKAGE,
+    DEMON0_MRP,
+    DEMON0_DEBUG_XML,
+    DEMON1_MRP,
+    DEMON1_DEBUG_XML,
+    DEMON2_MRP,
+    DEMON2_DEBUG_XML,
+    UPDATE_TXT
 };
 
 class XFrame : public QObject

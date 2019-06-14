@@ -154,7 +154,7 @@ int Package::loadIn(QByteArray &bA)
 int Package::save()
 {
     if(mOutFileName.isEmpty()){
-        mOutFileName = QDir::currentPath() + "/package.package";
+        mOutFileName = QDir::currentPath() + "/package.upd";
     }
     QFile f(mOutFileName);
     if (!f.open(QIODevice::WriteOnly)){
@@ -191,9 +191,23 @@ int Package::_save()
     QString dirPath = filePath.left(filePath.lastIndexOf("/"));
     for(int i = 0; i < mOutEntityList.size(); i++){
         if(mOutEntityList.at(i)->mId == MCT_MRQ){
-            mOutEntityList.at(i)->mOutFileName = dirPath + QString("/mrq.dat");
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/mrq.dat");
         }else if( mOutEntityList.at(i)->mId == MCT_MRH ){
-            mOutEntityList.at(i)->mOutFileName = dirPath + QString("/mrh.dat");
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/mrh.dat");
+        }else if( mOutEntityList.at(i)->mId == DEMON0_MRP ){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/demo/0/MCT_motion.mrp");
+        }else if( mOutEntityList.at(i)->mId == DEMON0_DEBUG_XML){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/demo/0/debug.xml");
+        }else if(mOutEntityList.at(i)->mId ==DEMON1_MRP){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/demo/1/MCT_motion.mrp");
+        }else if(mOutEntityList.at(i)->mId ==DEMON1_DEBUG_XML){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/demo/1/debug.xml");
+        }else if(mOutEntityList.at(i)->mId ==DEMON2_MRP){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/demo/2/MCT_motion.mrp");
+        }else if(mOutEntityList.at(i)->mId ==DEMON2_DEBUG_XML){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/demo/2/debug.xml");
+        }else if(mOutEntityList.at(i)->mId ==UPDATE_TXT){
+            mOutEntityList.at(i)->mOutFileName = QDir::tempPath() + QString("/output/update.txt");
         }
         mOutEntityList.at(i)->extractSource();
     }

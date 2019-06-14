@@ -49,6 +49,17 @@ int main(int argc, char *argv[])
     QCommandLineOption op4("r", "mrh-file-path", "file");
     QCommandLineOption op5("o", "output-file-path", "file");
     QCommandLineOption op6("p", "package-file-path", "file");
+    QCommandLineOption op7("u", "update.txt","file");
+
+    QCommandLineOption op8("d","MCT_motion.mrp", "file");
+    QCommandLineOption op9("i","debug.xml", "file");
+
+    QCommandLineOption op10("j","MCT_motion.mrp", "file");
+    QCommandLineOption op11("k","debug.xml", "file");
+
+    QCommandLineOption op12("l","MCT_motion.mrp", "file");
+    QCommandLineOption op13("m","debug.xml", "file");
+
 
     parser.addOption(op1);
     parser.addOption(op2);
@@ -56,19 +67,27 @@ int main(int argc, char *argv[])
     parser.addOption(op4);
     parser.addOption(op5);
     parser.addOption(op6);
+    parser.addOption(op7);
+    parser.addOption(op8);
+    parser.addOption(op9);
+    parser.addOption(op10);
+    parser.addOption(op11);
+    parser.addOption(op12);
+    parser.addOption(op13);
 
     parser.process(a);
 
     QString packagePath, packName;
     if(parser.isSet(op1)){
-        if(!parser.isSet(op3) || !parser.isSet(op4)){
-            qDebug() << "Argument error";
+        if(!parser.isSet(op3) || !parser.isSet(op4)|| !parser.isSet(op7)|| !parser.isSet(op8)
+                || !parser.isSet(op9)|| !parser.isSet(op10)|| !parser.isSet(op11)
+                || !parser.isSet(op12)|| !parser.isSet(op13)){
+            qDebug() << "Error: Argument Error";
             return -1;
         }
         if(parser.isSet(op5)){
             packagePath = parser.value(op5);
         }
-//        qDebug() << parser.value(op3) << parser.value(op4) << packagePath;
         Entity *e = new Entity;
         e->setFilePath(parser.value(op3));
         e->setID(MCT_MRQ);
@@ -83,10 +102,68 @@ int main(int argc, char *argv[])
             return -1;
         }
 
+        //!
+        Entity *e3 = new Entity;
+        e3->setFilePath(parser.value(op8));
+        e3->setID(DEMON0_MRP);
+        if(e3->compressFile() != 0){
+            return -1;
+        }
+
+        Entity *e4 = new Entity;
+        e4->setFilePath(parser.value(op9));
+        e4->setID(DEMON0_DEBUG_XML);
+        if(e4->compressFile() != 0){
+            return -1;
+        }
+
+        Entity *e5 = new Entity;
+        e5->setFilePath(parser.value(op10));
+        e5->setID(DEMON1_MRP);
+        if(e5->compressFile() != 0){
+            return -1;
+        }
+
+        Entity *e6 = new Entity;
+        e6->setFilePath(parser.value(op11));
+        e6->setID(DEMON1_DEBUG_XML);
+        if(e6->compressFile() != 0){
+            return -1;
+        }
+
+        Entity *e7 = new Entity;
+        e7->setFilePath(parser.value(op12));
+        e7->setID(DEMON2_MRP);
+        if(e7->compressFile() != 0){
+            return -1;
+        }
+
+        Entity *e8 = new Entity;
+        e8->setFilePath(parser.value(op13));
+        e8->setID(DEMON2_DEBUG_XML);
+        if(e8->compressFile() != 0){
+            return -1;
+        }
+
+        Entity *e9 = new Entity;
+        e9->setFilePath(parser.value(op7));
+        e9->setID(UPDATE_TXT);
+        if(e9->compressFile() != 0){
+            return -1;
+        }
+        //!
+
         Package *p = new Package;
         p->setOutFilePath(packagePath);
         p->insertEntity(e);
         p->insertEntity(e2);
+        p->insertEntity(e3);
+        p->insertEntity(e4);
+        p->insertEntity(e5);
+        p->insertEntity(e6);
+        p->insertEntity(e7);
+        p->insertEntity(e8);
+        p->insertEntity(e9);
         if(p->compressFile() != 0){
             return -1;
         }
@@ -105,30 +182,6 @@ int main(int argc, char *argv[])
         pt->setFilePath(packName);
         pt->uncompressFile();
     }
-
-#if 0
-    Entity *e = new Entity();
-    e->setFilePath("C:\\Users\\lwq\\Documents\\build-untitled5-Desktop_Qt_5_10_1_MinGW_32bit-Debug\\debug\\testfile\\SinanjuProject(SOFT)_1.0.3.0.2(Beta).upd");
-    e->setID(MCT_MRQ);
-    e->compressFile();
-
-    Entity *e1 = new Entity();
-    e1->setFilePath("C:\\Users\\lwq\\Documents\\build-untitled5-Desktop_Qt_5_10_1_MinGW_32bit-Debug\\debug\\testfile\\GreatShot_1.20_Beta1.mrh");
-    e1->setID(MCT_MRH);
-    e1->compressFile();
-
-    Package *p = new Package;
-    p->setOutFilePath("C:\\Users\\lwq\\Documents\\build-untitled5-Desktop_Qt_5_10_1_MinGW_32bit-Debug\\debug\\testfile\\ppp.package");
-    p->insertEntity(e);
-    p->insertEntity(e1);
-    p->compressFile();
-
-#endif
-#if 0
-    Package *p = new Package;
-    p->setFilePath("C:\\Users\\lwq\\Documents\\build-untitled5-Desktop_Qt_5_10_1_MinGW_32bit-Debug\\debug\\testfile\\ppp.package");
-    p->uncompressFile();
-#endif
 
     return 0;
 }
