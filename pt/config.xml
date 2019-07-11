@@ -1,0 +1,12 @@
+<config>
+<desc>MRX-T4_R0.0.0.1</desc>
+<block>
+<mrq_path>MRQ-MV1.0(SOFT)Update(Normal)_0.0.3.1.1.upd</mrq_path>
+<mrh_path>tmp.tar.gz</mrh_path>
+</block>
+<output_file_name>MCT-MRX_R0.0.2.0.upd</output_file_name>
+<mrq_version>00.00.01.00</mrq_version>
+<mrh_version>0.0.2.7</mrh_version>
+<mct_version>0.0.2.0</mct_version>
+<t4_version>v1.0</t4_version>
+</config>

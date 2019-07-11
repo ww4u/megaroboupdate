@@ -10,16 +10,18 @@ class Package : public XFrame
     Q_OBJECT
 public:
     explicit Package(QObject *parent = nullptr);
-    //! compress func
-    Package(const QString& strPath, const QString& outFileName, QObject *parent);
-    //! uncompress func
-    Package(const QString& strPath, QObject *parent = nullptr);
 
-    virtual int compressFile();
-    virtual int uncompressFile();
-
-    void insertFile( const QString &fileName );
+    /* 获取entity的值，初始化package */
     void insertEntity(Entity *entity );
+    void init();
+    int packet(QString path);
+
+    /* unpacket */
+    int loadFile(QString path, QByteArray &baLoad);
+    void _init( QByteArray &baLoad );
+    int unpacket();
+    void getEntity( QByteArray &in );
+    int saveEntityFile();
 
 private:
     QStringList mFileList;
@@ -30,17 +32,8 @@ private:
     /* 解压缩出来的entity */
     QList<Entity *> mOutEntityList;
 
-    int _loadIn();
-
-    int splitEntity();
-
-    int _save();
-
-    int unpackingToEntity(Package *pk);
-
 protected:
-    int loadIn(QByteArray &bA);
-    int save();
+
 };
 
 #endif // PACKAGE_H

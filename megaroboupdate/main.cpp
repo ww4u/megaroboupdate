@@ -1,11 +1,13 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QCommandLineParser>
-#include "xframe.h"
-#include "block.h"
+#include <QXmlStreamReader>
+#include <QFile>
+#include <QString>
 #include "entity.h"
 #include "package.h"
 
+#define mqdbg() qDebug()
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -27,161 +29,97 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
             fprintf(stdout, "%s\n", localMsg.constData());
             break;
     }
-    fflush(stdout);
 }
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-
     qInstallMessageHandler(myMessageOutput);
 
-    QCoreApplication::setApplicationName("Pack and Unpacking tool");
-    QCoreApplication::setApplicationVersion("V0.0.1.0");
+    QCoreApplication::setApplicationName( QObject::tr( "Packet And Unpacket Tool" ) );
+    QCoreApplication::setApplicationVersion( QObject::tr("v0.0.1.0") );
 
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption op1("c","Compress the files to package");
-    QCommandLineOption op2("x","Uncompress the file to updating files");
-    QCommandLineOption op3("q", "mrq-file-path", "file");
-    QCommandLineOption op4("r", "mrh-file-path", "file");
-    QCommandLineOption op5("o", "output-file-path", "file");
-    QCommandLineOption op6("p", "package-file-path", "file");
-    QCommandLineOption op7("u", "update.txt","file");
-
-    QCommandLineOption op8("d","MCT_motion.mrp", "file");
-    QCommandLineOption op9("i","debug.xml", "file");
-
-    QCommandLineOption op10("j","MCT_motion.mrp", "file");
-    QCommandLineOption op11("k","debug.xml", "file");
-
-    QCommandLineOption op12("l","MCT_motion.mrp", "file");
-    QCommandLineOption op13("m","debug.xml", "file");
-
-
-    parser.addOption(op1);
-    parser.addOption(op2);
-    parser.addOption(op3);
-    parser.addOption(op4);
-    parser.addOption(op5);
-    parser.addOption(op6);
-    parser.addOption(op7);
-    parser.addOption(op8);
-    parser.addOption(op9);
-    parser.addOption(op10);
-    parser.addOption(op11);
-    parser.addOption(op12);
-    parser.addOption(op13);
-
+    QCommandLineOption packetOption("c", QCoreApplication::translate("main", "Packet The File"));
+    parser.addOption(packetOption);
+    //<< "Source-File"
+    QCommandLineOption unpacketOption("x", "Source File", "File");
+    parser.addOption(unpacketOption);
     parser.process(a);
 
-    QString packagePath, packName;
-    if(parser.isSet(op1)){
-        if(!parser.isSet(op3) || !parser.isSet(op4)|| !parser.isSet(op7)|| !parser.isSet(op8)
-                || !parser.isSet(op9)|| !parser.isSet(op10)|| !parser.isSet(op11)
-                || !parser.isSet(op12)|| !parser.isSet(op13)){
-            qDebug() << "Error: Argument Error";
-            return -1;
+    QString desc, mrq_path, mrh_path, output_file_name, mrq_ver, mrh_ver, mct_ver;
+
+    QString xmlPath = qApp->applicationDirPath() + "/config.xml";
+    //xmlPath = "C:/Users/lwq/Desktop/pt/config.xml";
+
+    QFile qFile( xmlPath );
+    if( qFile.open( QIODevice::ReadOnly | QIODevice::Text) ){
+
+    }else{ qDebug() << "Error: Invalid Config File"; return -1; }
+
+    QXmlStreamReader reader( &qFile );
+    while( reader.readNextStartElement() ){
+        if( reader.name() == "config" ){
+            while( reader.readNextStartElement() ){
+                if( reader.name() == "desc" ){
+                    desc = reader.readElementText();
+                }else if( reader.name() == "block" ){
+                    while( reader.readNextStartElement() ){
+                        if( reader.name() == "mrq_path" ){
+                            mrq_path = reader.readElementText();
+                        }else if( reader.name() == "mrh_path" ){
+                            mrh_path = reader.readElementText();
+                        }else{
+                            reader.skipCurrentElement();
+                        }
+                    }
+                }else if( reader.name() == "output_file_name" ){
+                    output_file_name = reader.readElementText();
+                }else if( reader.name() == "mrq_version" ){
+                    mrq_ver = reader.readElementText();
+                }else if( reader.name() == "mrh_version" ){
+                    mrh_ver = reader.readElementText();
+                }else if( reader.name() == "mct_version" ){
+                    mct_ver = reader.readElementText();
+                }else if( reader.name() == "t4_version" ){
+
+                }else{
+                    reader.skipCurrentElement();
+                }
+            }
         }
-        if(parser.isSet(op5)){
-            packagePath = parser.value(op5);
-        }
-        Entity *e = new Entity;
-        e->setFilePath(parser.value(op3));
-        e->setID(MCT_MRQ);
-        if(e->compressFile() != 0){
-            return -1;
-        }
+        else
+            { reader.skipCurrentElement(); }
+    }
+
+    if( parser.isSet( packetOption ) ){
+        Entity *e1 = new Entity;
+        e1->setDesc( mrh_ver );
+        e1->setId( MRH_ENTITY );
+        e1->init( mrh_path );
 
         Entity *e2 = new Entity;
-        e2->setFilePath(parser.value(op4));
-        e2->setID(MCT_MRH);
-        if(e2->compressFile() != 0){
-            return -1;
-        }
-
-        //!
-        Entity *e3 = new Entity;
-        e3->setFilePath(parser.value(op8));
-        e3->setID(DEMON0_MRP);
-        if(e3->compressFile() != 0){
-            return -1;
-        }
-
-        Entity *e4 = new Entity;
-        e4->setFilePath(parser.value(op9));
-        e4->setID(DEMON0_DEBUG_XML);
-        if(e4->compressFile() != 0){
-            return -1;
-        }
-
-        Entity *e5 = new Entity;
-        e5->setFilePath(parser.value(op10));
-        e5->setID(DEMON1_MRP);
-        if(e5->compressFile() != 0){
-            return -1;
-        }
-
-        Entity *e6 = new Entity;
-        e6->setFilePath(parser.value(op11));
-        e6->setID(DEMON1_DEBUG_XML);
-        if(e6->compressFile() != 0){
-            return -1;
-        }
-
-        Entity *e7 = new Entity;
-        e7->setFilePath(parser.value(op12));
-        e7->setID(DEMON2_MRP);
-        if(e7->compressFile() != 0){
-            return -1;
-        }
-
-        Entity *e8 = new Entity;
-        e8->setFilePath(parser.value(op13));
-        e8->setID(DEMON2_DEBUG_XML);
-        if(e8->compressFile() != 0){
-            return -1;
-        }
-
-        Entity *e9 = new Entity;
-        e9->setFilePath(parser.value(op7));
-        e9->setID(UPDATE_TXT);
-        if(e9->compressFile() != 0){
-            return -1;
-        }
-        //!
+        e2->setDesc( mrq_ver );
+        e2->setId( MRQ_ENTITY );
+        e2->init( mrq_path );
 
         Package *p = new Package;
-        p->setOutFilePath(packagePath);
-        p->insertEntity(e);
-        p->insertEntity(e2);
-        p->insertEntity(e3);
-        p->insertEntity(e4);
-        p->insertEntity(e5);
-        p->insertEntity(e6);
-        p->insertEntity(e7);
-        p->insertEntity(e8);
-        p->insertEntity(e9);
-        if(p->compressFile() != 0){
-            return -1;
-        }
+        p->insertEntity( e1 );
+        p->insertEntity( e2 );
+        p->setDesc( desc );
+        p->init();
+        p->packet( output_file_name );
+    }else if( parser.isSet( unpacketOption ) ){
+        Package *p1 = new Package;
+        QByteArray ba;
+        p1->loadFile( parser.value( unpacketOption ), ba );
+        p1->_init( ba );
+        p1->unpacket();
+    }else{}
 
-        return 0;
-    }
-
-    if(parser.isSet(op2)){
-        if(!parser.isSet(op6)){
-            qDebug() << "uncompress arguments error";
-            return -1;
-        }
-        packName = parser.value(op6);
-
-        Package *pt = new Package;
-        pt->setFilePath(packName);
-        pt->uncompressFile();
-    }
-
+    qFile.close();
     return 0;
 }

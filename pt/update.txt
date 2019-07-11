@@ -1,0 +1,18 @@
+Version：MCT-MRX_R0.0.1.0
+MRQ Version：00.00.00.03
+MRH Version: 00.00.02.06
+*bug修复
+*UI界面更新
+*xxx
+
+Version：MCT-MRX_R0.0.0.2
+MRQ Version：00.00.03
+MRH Version: 00.00.02.06
+*bug修复
+*UI界面更新
+
+Version：MCT-MRX_R0.0.0.1
+MRQ Version：00.00.03
+MRH Version: 00.00.02.07
+*控制更新
+*bug修复

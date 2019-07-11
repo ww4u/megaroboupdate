@@ -8,19 +8,16 @@ class Entity : public XFrame
     Q_OBJECT
 public:
     explicit Entity(QObject *parent = nullptr);
-    Entity(const QString& strPath, const QString& outFileName, QObject *parent = nullptr);
 
-    virtual int compressFile();
-    virtual int save();
+    int init(QString path);
 
-    /* 提取源码 */
-    int extractSource();
-
-
+    void setId( ID id );
 
 protected:
-    int loadIn( QByteArray &bA );
 
+    int loadFile(QString path, QByteArray &baLoad);
+
+    void pickUpData( QByteArray &in );
 
 };
 

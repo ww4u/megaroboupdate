@@ -1,92 +1,63 @@
 
 #include "entity.h"
 #include <QFile>
+#include "crc32check.h"
+#include <QDebug>
 
 Entity::Entity(QObject *parent):
     XFrame( parent )
 {
 
 }
-Entity::Entity(const QString& strPath, const QString& outFileName, QObject *parent):
-    XFrame(strPath, outFileName, parent)
-{
 
+int Entity::init( QString path )
+{
+    QByteArray ba;
+    if( loadFile( path, ba ) !=0 ){
+        qDebug() << tr( "Error : Invalid File" );
+        return -1;
+    }
+
+    pickUpData( ba );
 }
 
-int Entity::compressFile()
+void Entity::setId( ID id )
 {
-    QByteArray bAPayload;
-    if( this->loadIn(bAPayload) !=0 ){
-        qDebug() << "Error: loadIn error";
+    this->mId = id;
+}
+
+int Entity::loadFile(QString path, QByteArray &baLoad)
+{
+    QFile file( path );
+    if( file.open( QIODevice::ReadOnly ) ){
+
+    }else{
         return -1;
     }
 
-    mSize = bAPayload.size();
-    mPayload = bAPayload;
-
-    //! 生成校验码
-    if( generateCheckCode( mPayload, mCheck ) != 0 ){
-        qDebug() << "Error: generate code error";
+    QByteArray ba = file.readAll();
+    if(ba.isEmpty())
         return -1;
-    }
+    baLoad = ba;
 
-    mFormat = Format::InCompressed;
+    return 0;
+}
+
+void Entity::pickUpData(QByteArray &in)
+{
+    mDescLen = mDescription.length();
+    mDescription;
+
+    mId;    /*  */
+
+    mSize = in.size();
+
+    mFormat = NORMAL;
+
     mSections = 1;
 
-    //! packet data
-    if (packetData() != 0){
-        return -1;
-    }
+    mPayload = in;
 
-    //! save
-    if(save() != 0)
-        return -1;
+    mCheck = getCRC( (quint8*)( in.data() ), in.length() );
 
-    return 0;
-}
-
-int Entity::save()
-{
-    return 0;
-}
-
-int Entity::loadIn( QByteArray &bA )
-{
-    //!
-    QFile f( filePath );
-    if( !f.exists() ){
-        qDebug() << "Error: File not exist";
-        return -1;
-    }
-
-    if (!f.open(QIODevice::ReadOnly)){
-        qDebug() << QString("Error: %1 open error").arg(filePath);
-        return -1;
-    }
-
-    bA = f.readAll();
-    if( bA.isEmpty() )
-        return -1;
-    f.close();
-
-    return 0;
-}
-#include <QFileInfo>
-#include <QDir>
-/* 解压时提取出源代码 */
-int Entity::extractSource()
-{
-    QFile f(mOutFileName);
-    QFileInfo info(mOutFileName);
-    //qDebug() << info.absolutePath() << info.absoluteFilePath();
-    QDir dir;
-    dir.mkpath(info.absolutePath());
-
-    if(!f.open(QIODevice::WriteOnly)){
-        return -1;
-    }
-    f.write(mPayload);
-    f.close();
-
-    return 0;
 }
