@@ -1,18 +1,35 @@
-Version��MCT-MRX_R0.0.1.0
-MRQ Version��00.00.00.03
-MRH Version: 00.00.02.06
-*bug�޸�
-*UI�������
-*xxx
+Version：MCT-MRX_R0.0.1.7
+MRQ Version：0.0.3.2.3
+MRH Version: 00.00.01.23
+*增加错误管理
+*优化故障和报警
+*优化IO输出
+*bug修复
+*UI界面更新
 
-Version��MCT-MRX_R0.0.0.2
-MRQ Version��00.00.03
-MRH Version: 00.00.02.06
-*bug�޸�
-*UI�������
+Version：MCT-MRX_R0.0.1.6
+MRQ Version：0.0.3.2.3
+MRH Version: 00.00.02.08
+*增加错误管理
+*优化故障和报警
+*优化IO输出
+*bug修复
+*UI界面更新
 
-Version��MCT-MRX_R0.0.0.1
-MRQ Version��00.00.03
+Version：MCT-MRX_R0.0.1.0
+MRQ Version：00.00.00.03
+MRH Version: 00.00.02.06
+*bug修复
+*UI界面更新
+
+Version：MCT-MRX_R0.0.0.2
+MRQ Version：00.00.03
+MRH Version: 00.00.02.06
+*bug修复
+*UI界面更新
+
+Version：MCT-MRX_R0.0.0.1
+MRQ Version：00.00.03
 MRH Version: 00.00.02.07
-*���Ƹ���
-*bug�޸�
+*控制更新
+*bug修复
